@@ -1,0 +1,6 @@
+package com.infy.Entity;
+
+@Entity
+public class UserDetails {
+
+}

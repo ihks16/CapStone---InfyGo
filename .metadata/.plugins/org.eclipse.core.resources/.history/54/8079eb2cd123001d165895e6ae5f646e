@@ -1,0 +1,11 @@
+package com.infygo.exception;
+
+public class flightNotExist extends Exception{
+
+	public flightNotExist(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
+	
+
+}

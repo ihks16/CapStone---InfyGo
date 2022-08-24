@@ -1,0 +1,26 @@
+package com.infy.Entity;
+
+import java.sql.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+public class FlightDetails {
+	@Id
+	private String flightId;
+	private String airlines;
+	private String arrivalTime;
+	private String departureTime;
+	private String destination;
+	private double fare;
+	@DateTimeFormat(pattern = "dd-mm-yyyy")
+	@Temporal(Temporal.DATE)
+	private Date flightAvailableDate;
+	private Integer seatCount;
+	private String source;
+	
+}

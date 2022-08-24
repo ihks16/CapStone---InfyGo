@@ -1,0 +1,15 @@
+package com.infy.Entity;
+
+public class TicketDetails {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int passengerId;
+	private String passsengerAge;
+	private String passengerGender;
+	private String PassengerName;
+	
+	@ManyToOne(targetEntity = TicketDetails.class,cascade = CascadeType.ALL)
+	@JoinColumn(name = "ticket_pnr")
+	private TicketDetails ticketpnr;
+}

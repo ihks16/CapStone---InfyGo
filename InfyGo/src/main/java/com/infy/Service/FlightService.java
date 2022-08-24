@@ -1,0 +1,89 @@
+package com.infy.Service;
+
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.catalina.connector.Response;
+import org.aspectj.apache.bcel.Repository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.infy.DTO.FlightDetailsDTO;
+import com.infy.Entity.FlightDetails;
+import com.infy.Exception.FlightNotExist;
+import com.infy.Repository.FlightRepository;
+
+
+@Service
+public class FlightService {
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private FlightRepository FlightRepository;
+	
+	
+	//funtion to add flight
+	public void addFlight(FlightDetailsDTO flightDetailsDTO) {
+		FlightDetails flightDetails = this.modelMapper.map(flightDetailsDTO, FlightDetails.class);
+		FlightRepository.saveAndFlush(flightDetails);
+		
+	}
+	
+	//find all flights
+	public List<FlightDetailsDTO> getAllFlights(){
+		List<FlightDetailsDTO> flightDetailsDTOs = new ArrayList<>();
+		List<FlightDetails> flightDetails = FlightRepository.findAll();
+		for(FlightDetails f: flightDetails) {
+		flightDetailsDTOs.add(this.modelMapper.map(f, FlightDetailsDTO.class));
+		}
+		return flightDetailsDTOs;
+	}
+	
+	//flights by source city
+	public List<FlightDetailsDTO> findBYSource(String city){
+		List<FlightDetails> flightDetails = FlightRepository.findBySource(city);
+		List<FlightDetailsDTO> flightDetailsDTOs = new ArrayList<>();
+		for(FlightDetails f : flightDetails) {
+			flightDetailsDTOs.add(this.modelMapper.map(f, FlightDetailsDTO.class));
+		}
+		return flightDetailsDTOs;
+	}
+	
+	// flights by destination
+	public List<FlightDetailsDTO> findBYDestination(String city){
+		List<FlightDetails> flightDetails = FlightRepository.findByDestination(city);
+		List<FlightDetailsDTO> flightDetailsDTOs = new ArrayList<>();
+		for(FlightDetails f : flightDetails) {
+			flightDetailsDTOs.add(this.modelMapper.map(f, FlightDetailsDTO.class));
+		}
+		return flightDetailsDTOs;
+	}
+	
+	
+	public List<FlightDetailsDTO> searchFlight(String source,String destination,Date date){
+		List<FlightDetailsDTO> flightDetailsDTOs = new ArrayList<>();
+		List<FlightDetails> flDetails = FlightRepository.findBySourceAndDestinationAndFlightAvailableDate(source, destination, date);
+		
+		for(FlightDetails f:flDetails) {
+			flightDetailsDTOs.add(this.modelMapper.map(f, FlightDetailsDTO.class));
+		}
+		return flightDetailsDTOs;
+	}
+	
+	public FlightDetailsDTO findbyId(String id) throws FlightNotExist {
+		Optional<FlightDetails> optional = FlightRepository.findById(id);
+		if(optional.isPresent()) {
+		return this.modelMapper.map(FlightRepository.findById(id),FlightDetailsDTO.class);
+		}
+		else {
+			throw new FlightNotExist("flight with given id is not exist");
+		}
+	}
+
+}

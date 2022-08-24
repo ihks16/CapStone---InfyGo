@@ -1,0 +1,44 @@
+package com.infy.Controller;
+
+import java.util.List;
+
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.infy.DTO.PassengerDetailsDTO;
+import com.infy.DTO.TicketDetailsDTO;
+import com.infy.Entity.TicketDetails;
+import com.infy.Exception.UserNotExist;
+import com.infy.Exception.FlightNotExist;
+import com.infy.Exception.SeatNotAvailable;
+import com.infy.Service.TicketService;
+
+@RestController
+@RequestMapping("/ticket")
+@Validated
+public class ticketController {
+
+	@Autowired
+	private TicketService TicketService;
+	
+	@PostMapping("/book")
+	public ResponseEntity<TicketDetails> bookTicked(@RequestParam("flightId") @NotNull(message = "enter flight Id") String flightId,
+			@RequestParam("userId") @NotNull (message = "enter user id") String userId,
+			@RequestBody List<PassengerDetailsDto> passengerDetailsDto
+			) throws FlightNotExist, UserNotExist, SeatNotAvailable{
+		
+		System.out.println("flight id :"+flightId);
+		System.out.println("user id :"+userId);
+		return new ResponseEntity<TicketDetails>(TicketService.bookTicket(flightId, userId, passengerDetailsDto),HttpStatus.ACCEPTED);
+	}
+}

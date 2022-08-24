@@ -1,0 +1,31 @@
+package com.infygo.service;
+
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.infygo.dto.CreditcardDetailsDto;
+import com.infygo.entity.CreditcardDetails;
+import com.infygo.repository.CreditcardDetailRepository;
+
+@Service
+public class CardService {
+		
+	@Autowired 
+	private CreditcardDetailRepository creditcardDetailRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public ResponseEntity<String> makePayment(CreditcardDetailsDto creditcardDetailsDto){
+		creditcardDetailRepository.saveAndFlush(this.modelMapper.map(creditcardDetailsDto, CreditcardDetails.class));	
+		
+		return new ResponseEntity<String>("Valid Creadit Card", HttpStatus.ACCEPTED);
+		
+	}
+
+}

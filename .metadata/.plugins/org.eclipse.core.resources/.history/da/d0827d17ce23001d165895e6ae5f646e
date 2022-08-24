@@ -1,0 +1,5 @@
+package com.infy.Aspect;
+
+public class GlobalExceptions {
+
+}

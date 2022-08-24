@@ -1,0 +1,43 @@
+package com.infy.Entity;
+
+import java.sql.Date;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
+public class TicketDetails {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int pnr;
+	@Temporal(TemporalType.DATE)
+	
+	private Date bookingDate;
+	@Temporal(TemporalType.DATE)
+	private Date departurefDate;
+	private String departureTime;
+	
+	@JsonIgnore
+	@ManyToOne(targetEntity = FlightDetails.class,cascade = CascadeType.ALL)
+	@JoinColumn(name = "flight_id")
+	private FlightDetails flightId;
+	
+	private int noOfSeats;
+	private Double totalFare;
+	
+	@JsonIgnore
+	@ManyToOne(targetEntity = UserDetails.class,cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private UserDetails userId;
+	
+	@OneToMany(mappedBy = "ticketpnr")
+	private List<PassengerDetails> passengerDetails;
+}

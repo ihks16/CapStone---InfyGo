@@ -1,0 +1,5 @@
+package Aspect;
+
+public class GlobalExceptions {
+
+}

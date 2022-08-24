@@ -1,0 +1,8 @@
+package com.infy.Exception;
+
+public class UserAllReadyExist extends Exception{
+	public userAllReadyExist(String msg) {
+		// TODO Auto-generated constructor stub
+		super(msg);
+	}
+}
